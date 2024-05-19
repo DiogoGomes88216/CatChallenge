@@ -89,6 +89,7 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
+    implementation(libs.retrofit.serialization)
 
     // Okhttp
     implementation(libs.okhttp)

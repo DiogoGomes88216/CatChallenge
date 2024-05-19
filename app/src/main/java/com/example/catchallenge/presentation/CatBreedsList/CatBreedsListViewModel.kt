@@ -9,7 +9,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.catchallenge.data.remote.BreedRemoteMediator
 import com.example.catchallenge.data.repository.BreedRepository
-import com.example.catchallenge.domain.mappers.BreedMapper.toBreed
+import com.example.catchallenge.data.mappers.BreedMapper.toBreed
 import com.example.catchallenge.utils.Constants.PAGE_SIZE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map

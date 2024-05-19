@@ -1,4 +1,4 @@
-package com.example.catchallenge.domain.mappers
+package com.example.catchallenge.data.mappers
 
 import com.example.catchallenge.data.local.entities.BreedEntity
 import com.example.catchallenge.data.remote.models.BreedDto
@@ -12,7 +12,7 @@ object BreedMapper {
         lifeSpan = lifeSpan,
         temperament = temperament,
         description = description,
-        referenceImageId = referenceImageId,
+        imageUrl = image?.url,
 
     )
 
@@ -23,7 +23,7 @@ object BreedMapper {
         lifeSpan = lifeSpan,
         temperament = temperament,
         description = description,
-        referenceImageId = referenceImageId,
+        imageUrl = image?.url,
     )
 
     fun BreedEntity.toBreed() = Breed(
@@ -32,6 +32,6 @@ object BreedMapper {
         lifeSpan = lifeSpan,
         temperament = temperament,
         description = description,
-        referenceImageId = referenceImageId,
+        imageUrl = imageUrl,
     )
 }

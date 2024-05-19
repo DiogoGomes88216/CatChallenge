@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.catchallenge.data.local.dao.BreedDao
 import com.example.catchallenge.data.local.db.BreedDatabase
 import com.example.catchallenge.data.remote.api.BreedApi
+import com.example.catchallenge.data.remote.interceptors.AuthorizationInterceptor
 import com.example.catchallenge.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -35,6 +36,7 @@ class AppModule {
     @Singleton
     fun providesCatApi(json: Json): BreedApi {
         val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(AuthorizationInterceptor())
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 

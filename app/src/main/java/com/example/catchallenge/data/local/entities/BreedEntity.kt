@@ -11,5 +11,5 @@ data class BreedEntity(
     val lifeSpan: String,
     val temperament: String,
     val description: String,
-    val referenceImageId: String?,
+    val imageUrl: String?,
 )

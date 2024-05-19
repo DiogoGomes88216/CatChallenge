@@ -20,6 +20,6 @@ data class BreedDto(
     val description: String,
     @SerialName("temperament")
     val temperament: String,
-    @SerialName("reference_image_id")
-    val referenceImageId: String?,
+    @SerialName("image")
+    val image: ImageDto?,
 )

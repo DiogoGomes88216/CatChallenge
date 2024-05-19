@@ -9,7 +9,7 @@ import com.example.catchallenge.data.local.db.BreedDatabase
 import com.example.catchallenge.data.local.entities.BreedEntity
 import com.example.catchallenge.data.local.entities.RemoteKeys
 import com.example.catchallenge.data.remote.api.BreedApi
-import com.example.catchallenge.domain.mappers.BreedMapper.toBreedEntity
+import com.example.catchallenge.data.mappers.BreedMapper.toBreedEntity
 import com.example.catchallenge.utils.Constants.BASE_IMAGE
 import com.example.catchallenge.utils.Constants.PAGE_SIZE
 import retrofit2.HttpException

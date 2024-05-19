@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -22,9 +23,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
+    @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
-    fun providesCatApi(): BreedApi {
+    fun providesJson() = Json{
+        explicitNulls = false
+        ignoreUnknownKeys = true
+    }
+
+    @Provides
+    @Singleton
+    fun providesCatApi(json: Json): BreedApi {
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
@@ -33,7 +42,7 @@ class AppModule {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .client(okHttpClient)
             .build()
             .create(BreedApi::class.java)

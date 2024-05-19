@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import com.example.catchallenge.navigation.CatNav
 import com.example.catchallenge.ui.theme.CatChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,13 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CatChallengeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Text(
-                        text = "test",
-                        modifier = Modifier
-                            .padding(innerPadding)
-                    )
-                }
+                CatNav()
             }
         }
     }

@@ -10,6 +10,7 @@ import com.example.catchallenge.data.local.entities.BreedEntity
 import com.example.catchallenge.data.local.entities.RemoteKeys
 import com.example.catchallenge.data.remote.api.BreedApi
 import com.example.catchallenge.domain.mappers.BreedMapper.toBreedEntity
+import com.example.catchallenge.utils.Constants.BASE_IMAGE
 import com.example.catchallenge.utils.Constants.PAGE_SIZE
 import retrofit2.HttpException
 import java.io.IOException
@@ -40,9 +41,7 @@ class BreedRemoteMediator @Inject constructor(
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state)
                 val nextKey = remoteKeys?.nextKey
-                if (nextKey == null) {
-                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
-                }
+                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                 nextKey
             }
         }
@@ -51,7 +50,7 @@ class BreedRemoteMediator @Inject constructor(
             val results = api.getBreeds(limit = limit, page = page)
 
             val domainData = results.map {dto ->
-                dto.toBreedEntity(imageUrl = getImageUrl(dto.referenceImageId))
+                dto.toBreedEntity()
             }
 
             val endOfPaginationReached = domainData.isEmpty()
@@ -65,7 +64,7 @@ class BreedRemoteMediator @Inject constructor(
                 val prevKey = if (page == initialPage) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val keys = domainData.map {
-                    RemoteKeys(name = it.name, prevKey = prevKey, nextKey = nextKey)
+                    RemoteKeys(name = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 db.remoteKeysDao().insertAll(keys)
                 db.breedDao.insertBreedEntities(domainData)
@@ -78,17 +77,13 @@ class BreedRemoteMediator @Inject constructor(
         }
     }
 
-    private fun getImageUrl(imageId: String): String {
-        return "https://cdn2.thecatapi.com/images/$imageId.jpg"
-    }
-
     private suspend fun getRemoteKeyForLastItem(
         state: PagingState<Int, BreedEntity>
     ): RemoteKeys? {
 
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { breed ->
-                db.remoteKeysDao().getRemoteKeysByBreed(name = breed.name)
+                db.remoteKeysDao().getRemoteKeysBy(id = breed.id)
             }
     }
 
@@ -97,8 +92,8 @@ class BreedRemoteMediator @Inject constructor(
     ): RemoteKeys? {
 
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.name?.let { name ->
-                db.remoteKeysDao().getRemoteKeysByBreed(name = name)
+            state.closestItemToPosition(position)?.id?.let { id ->
+                db.remoteKeysDao().getRemoteKeysBy(id = id)
             }
         }
     }

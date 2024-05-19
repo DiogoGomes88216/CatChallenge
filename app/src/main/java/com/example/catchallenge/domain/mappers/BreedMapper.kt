@@ -6,22 +6,24 @@ import com.example.catchallenge.domain.models.Breed
 
 object BreedMapper {
 
-    fun BreedDto.toBreed(imageUrl: String) = Breed(
+    fun BreedDto.toBreed() = Breed(
         name = name,
         origin = origin,
         lifeSpan = lifeSpan,
         temperament = temperament,
         description = description,
-        imageUrl = imageUrl,
+        referenceImageId = referenceImageId,
+
     )
 
-    fun BreedDto.toBreedEntity(imageUrl: String) = BreedEntity(
+    fun BreedDto.toBreedEntity() = BreedEntity(
+        id = id,
         name = name,
         origin = origin,
         lifeSpan = lifeSpan,
         temperament = temperament,
         description = description,
-        imageUrl = imageUrl,
+        referenceImageId = referenceImageId,
     )
 
     fun BreedEntity.toBreed() = Breed(
@@ -30,6 +32,6 @@ object BreedMapper {
         lifeSpan = lifeSpan,
         temperament = temperament,
         description = description,
-        imageUrl = imageUrl,
+        referenceImageId = referenceImageId,
     )
 }

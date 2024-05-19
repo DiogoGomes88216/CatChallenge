@@ -5,10 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class BreedEntity(
-    @PrimaryKey val name: String,
+    @PrimaryKey val id: String,
+    val name: String,
     val origin: String,
     val lifeSpan: String,
     val temperament: String,
     val description: String,
-    val imageUrl: String,
+    val referenceImageId: String?,
 )

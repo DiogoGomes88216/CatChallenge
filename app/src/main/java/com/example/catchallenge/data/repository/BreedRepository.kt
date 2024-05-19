@@ -12,5 +12,4 @@ class BreedRepository @Inject constructor(
     fun getPagingSource(): PagingSource<Int, BreedEntity> {
         return dao.pagingSource()
     }
-
 }

@@ -12,8 +12,8 @@ interface RemoteKeysDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<RemoteKeys>)
 
-    @Query("SELECT * FROM remotekeys WHERE name LIKE :name")
-    suspend fun getRemoteKeysByBreed(name: String): RemoteKeys?
+    @Query("SELECT * FROM remotekeys WHERE name LIKE :id")
+    suspend fun getRemoteKeysBy(id: String): RemoteKeys?
 
     @Query("DELETE FROM remotekeys")
     suspend fun clearRemoteKeys()

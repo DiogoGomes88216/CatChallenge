@@ -12,4 +12,8 @@ class BreedRepository @Inject constructor(
     fun getPagingSource(): PagingSource<Int, BreedEntity> {
         return dao.pagingSource()
     }
+
+    fun isFavourite(id: String): Boolean {
+        return true
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.catchallenge.presentation.CatBreedsList
+package com.example.catchallenge.presentation.breedsList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,15 +12,22 @@ import com.example.catchallenge.data.repository.BreedRepository
 import com.example.catchallenge.data.mappers.BreedMapper.toBreed
 import com.example.catchallenge.utils.Constants.PAGE_SIZE
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class CatBreedsListViewModel @Inject constructor(
+class BreedsListViewModel @Inject constructor(
     private val repository: BreedRepository,
     private val remoteMediator: BreedRemoteMediator
 ): ViewModel() {
 
+    private val _breedsListState = MutableStateFlow(BreedsListState())
+    val breedsListState: StateFlow<BreedsListState> by lazy {
+        _breedsListState
+    }
 
     @OptIn(ExperimentalPagingApi::class)
     val breedPager = Pager(
@@ -37,8 +44,14 @@ class CatBreedsListViewModel @Inject constructor(
     ).flow
         .map {pagingData ->
             pagingData.map {
-                it.toBreed()
+                it.toBreed(isFavourite = repository.isFavourite(it.id))
             }
         }
         .cachedIn(viewModelScope)
+
+    fun changeBottomBar(newIndex: Int) {
+        _breedsListState.update {
+            it.copy(selectedBottomItemIndex = newIndex)
+        }
+    }
 }

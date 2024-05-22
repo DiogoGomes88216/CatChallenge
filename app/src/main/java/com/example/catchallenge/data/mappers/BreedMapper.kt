@@ -7,6 +7,7 @@ import com.example.catchallenge.domain.models.Breed
 object BreedMapper {
 
     fun BreedDto.toBreed(isFavourite: Boolean) = Breed(
+        id = id,
         name = name,
         origin = origin,
         lifeSpan = lifeSpan,
@@ -27,6 +28,7 @@ object BreedMapper {
     )
 
     fun BreedEntity.toBreed(isFavourite: Boolean) = Breed(
+        id = id,
         name = name,
         origin = origin,
         lifeSpan = lifeSpan,

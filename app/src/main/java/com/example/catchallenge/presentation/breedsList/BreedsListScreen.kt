@@ -26,13 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.catchallenge.R
-import com.example.catchallenge.presentation.componnents.BottomNavigationBar
-import com.example.catchallenge.presentation.componnents.BreedItem
+import com.example.catchallenge.domain.models.Breed
+import com.example.catchallenge.presentation.breedsList.componnents.BottomNavigationBar
+import com.example.catchallenge.presentation.breedsList.componnents.BreedItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatBreedsListScreen(
+fun BreedsListScreen(
     viewModel: BreedsListViewModel = hiltViewModel(),
+    onNavigateToDetails: (id: String) -> Unit
 ) {
     val breedList = viewModel.breedPager.collectAsLazyPagingItems()
     val uiState by viewModel.breedsListState.collectAsState()
@@ -89,7 +91,7 @@ fun CatBreedsListScreen(
                     BreedItem(
                         breed = breed,
                         onClick = {
-
+                            onNavigateToDetails(breed.id)
                         },
                         onToggleFavourite = {
 

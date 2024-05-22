@@ -1,4 +1,4 @@
-package com.example.catchallenge.presentation.componnents
+package com.example.catchallenge.presentation.breedsList.componnents
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

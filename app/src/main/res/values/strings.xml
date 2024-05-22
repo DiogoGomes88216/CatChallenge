@@ -4,4 +4,9 @@
     <string name="favourites">Favourites</string>
     <string name="catBreeds">Cat Breeds</string>
     <string name="search">Search</string>
+    <string name="breedDetails">Breed Details</string>
+    <string name="back">Back</string>
+    <string name="origin">Origin</string>
+    <string name="lifeSpan">Life Span</string>
+    <string name="years">Years</string>
 </resources>

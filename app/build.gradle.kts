@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.material.icons.extended)
 
 
     // Lifecycle

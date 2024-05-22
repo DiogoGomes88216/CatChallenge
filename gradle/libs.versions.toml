@@ -1,5 +1,5 @@
 [versions]
-agp = "8.4.0"
+agp = "8.4.1"
 coilCompose = "2.6.0"
 hiltAndroid = "2.51.1"
 hilt = "1.2.0"
@@ -14,6 +14,7 @@ composeBom = "2024.05.00"
 
 composeNavigation = "2.8.0-beta01"
 loggingInterceptor = "4.12.0"
+materialIconsExtended = "1.6.7"
 okhttp = "4.12.0"
 pagingCompose = "3.3.0"
 retrofit = "2.11.0"
@@ -47,6 +48,7 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingCompose" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 
 #Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }

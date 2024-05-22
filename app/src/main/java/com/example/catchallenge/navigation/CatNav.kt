@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.catchallenge.presentation.breedsList.CatBreedsListScreen
+import com.example.catchallenge.presentation.breedDetails.BreedDetailsScreen
+import com.example.catchallenge.presentation.breedsList.BreedsListScreen
 
 @Composable
 fun CatNav() {
@@ -14,9 +15,21 @@ fun CatNav() {
         startDestination = Screens.BreedlistScreen,
     ){
         composable<Screens.BreedlistScreen>{
-            CatBreedsListScreen()
+            BreedsListScreen(
+                onNavigateToDetails = {id ->
+                    navController.navigate(
+                        Screens.BreedDetailsScreen(id = id)
+                    )
+                }
+            )
         }
-
-
+        composable<Screens.BreedDetailsScreen>(
+        ){
+            BreedDetailsScreen(
+                onNavigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
     }
 }

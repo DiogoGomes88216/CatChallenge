@@ -8,8 +8,6 @@ internal sealed class Screens {
     @Serializable
     object BreedlistScreen
 
-    /*@Serializable
-    data class BreedDetailsScreen(
-        val breed: Breed,
-    )*/
+    @Serializable
+    data class BreedDetailsScreen(val id: String)
 }

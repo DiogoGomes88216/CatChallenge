@@ -1,0 +1,15 @@
+package com.example.catchallenge.data.local.entities
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class FavouriteEntity (
+    @PrimaryKey val id: String,
+    val name: String,
+    val origin: String,
+    val lifeSpan: String,
+    val temperament: String,
+    val description: String,
+    val imageUrl: String?,
+)

@@ -1,4 +1,4 @@
-package com.example.catchallenge.presentation.breedsList.componnents
+package com.example.catchallenge.presentation.componnents
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -8,7 +8,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -22,9 +21,8 @@ data class BottomNavigationItem(
 
 @Composable
 fun BottomNavigationBar(
-    modifier: Modifier = Modifier,
     selectedIconIndex: Int,
-    onChange: (index: Int) -> Unit
+    onChange: () -> Unit
 ) {
     val items = listOf(
         BottomNavigationItem(
@@ -44,7 +42,7 @@ fun BottomNavigationBar(
                 selected = selectedIconIndex == index,
                 onClick = {
                     if(index != selectedIconIndex)
-                        onChange(index)
+                        onChange()
                 },
                 label = {
                     Text(text = item.title)

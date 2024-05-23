@@ -1,10 +1,11 @@
-package com.example.catchallenge.presentation.breedsList.componnents
+package com.example.catchallenge.presentation.componnents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.ElevatedCard
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.catchallenge.R
 import com.example.catchallenge.domain.models.Breed
+import com.example.catchallenge.presentation.breedDetails.componnents.BioItem
 
 @Composable
 fun BreedItem(
@@ -54,13 +56,16 @@ fun BreedItem(
                     maxLines = 1,
                 )
                 if(showLifeSpan){
-                    Text(
+                    BioItem(
                         modifier = Modifier
                             .padding(horizontal = 6.dp),
-                        text = "${breed.lifeSpan} Years",
+                        imageVector = Icons.Filled.AccessTime,
+                        contentDescription = stringResource(id = R.string.lifeSpan),
+                        text = "${breed.lifeSpan} ${stringResource(R.string.years)}",
+                        fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
+                        imageSize = 14.dp,
+                        spacedBy = 4.dp
                     )
                 }
             }

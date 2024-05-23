@@ -1,12 +1,9 @@
-package com.example.catchallenge.presentation.breedDetails
+package com.example.catchallenge.presentation.favourites
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.example.catchallenge.data.repository.BreedRepository
 import com.example.catchallenge.domain.models.Breed
-import com.example.catchallenge.navigation.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,23 +12,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BreedDetailsViewModel @Inject constructor(
+class FavouritesViewModel @Inject constructor(
     private val repository: BreedRepository,
-    stateHandle: SavedStateHandle,
 ): ViewModel() {
 
-    private val _breedDetailsState = MutableStateFlow(BreedDetailsState())
-    val breedDetailsState: StateFlow<BreedDetailsState> by lazy {
-        getBreedDetailsById(stateHandle.toRoute<Screens.BreedDetailsScreen>().id)
-        _breedDetailsState
+    private val _favouritesState = MutableStateFlow(FavouritesState())
+    val favouritesState: StateFlow<FavouritesState> by lazy {
+        getFavourites()
+        _favouritesState
     }
 
-    private fun getBreedDetailsById(id: String) {
+    private fun getFavourites() {
         viewModelScope.launch {
-            val breed = repository.getBreedDetailsById(id = id)
-            _breedDetailsState.update {
-                it.copy(breed = breed)
-            }
+            repository.getFavourites()
+                .onSuccess { favourites ->
+                    _favouritesState.update {
+                        it.copy(favourites = favourites, isLoading = false, hasError = false)
+                    }
+                }
+                .onFailure {ex ->
+                    _favouritesState.update {
+                        it.copy(isLoading = false, hasError = true, error = ex.toString())
+                    }
+                }
         }
     }
 
@@ -42,7 +45,8 @@ class BreedDetailsViewModel @Inject constructor(
             } else {
                 repository.addFavourite(breed)
             }
-            getBreedDetailsById(breed.id)
+
+            getFavourites()
         }
     }
 }

@@ -1,11 +1,19 @@
 package com.example.catchallenge.di
 
 import android.app.Application
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.example.catchallenge.data.local.dao.BreedDao
+import com.example.catchallenge.data.local.dao.FavouriteDao
 import com.example.catchallenge.data.local.db.BreedDatabase
+import com.example.catchallenge.data.local.entities.BreedEntity
+import com.example.catchallenge.data.remote.BreedRemoteMediator
 import com.example.catchallenge.data.remote.api.BreedApi
 import com.example.catchallenge.data.remote.interceptors.AuthorizationInterceptor
+import com.example.catchallenge.data.repository.BreedRepository
+import com.example.catchallenge.utils.Constants
 import com.example.catchallenge.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -57,12 +65,39 @@ class AppModule {
             app,
             BreedDatabase::class.java,
             "breeddb.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
     @Singleton
     fun provideBreedDao(database: BreedDatabase): BreedDao {
         return database.breedDao
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavouriteDao(database: BreedDatabase): FavouriteDao {
+        return database.favouriteDao
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    @Provides
+    @Singleton
+    fun providePager(
+        remoteMediator: BreedRemoteMediator,
+        repository: BreedRepository
+    ): Pager<Int, BreedEntity> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = Constants.PAGE_SIZE,
+                enablePlaceholders = true,
+                prefetchDistance = 3 * Constants.PAGE_SIZE,
+                initialLoadSize = 2 * Constants.PAGE_SIZE,
+            ),
+            remoteMediator = remoteMediator,
+            pagingSourceFactory = {
+                repository.getPagingSource()
+            }
+        )
     }
 }

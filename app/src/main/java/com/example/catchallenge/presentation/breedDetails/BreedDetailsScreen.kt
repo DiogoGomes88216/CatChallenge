@@ -63,7 +63,7 @@ fun BreedDetailsScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.toggleFavourite() }) {
+                    IconButton(onClick = { viewModel.toggleFavourite(uiState.breed) }) {
                         Icon(
                             imageVector = if(uiState.breed.isFavourite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = stringResource(id = R.string.favourites)

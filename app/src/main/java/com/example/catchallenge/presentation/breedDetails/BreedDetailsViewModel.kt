@@ -37,12 +37,7 @@ class BreedDetailsViewModel @Inject constructor(
 
     fun toggleFavourite(breed: Breed) {
         viewModelScope.launch {
-            if(breed.isFavourite) {
-                repository.removeFavourite(breed.id)
-            } else {
-                repository.addFavourite(breed)
-            }
-            getBreedDetailsById(breed.id)
+           repository.toggleFavourite(breed)
         }
     }
 }

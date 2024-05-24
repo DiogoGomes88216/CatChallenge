@@ -10,29 +10,22 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.catchallenge.R
 import com.example.catchallenge.presentation.componnents.BreedItem
 import com.example.catchallenge.presentation.componnents.ErrorMessage
 import com.example.catchallenge.presentation.componnents.ListScreen
 import com.example.catchallenge.presentation.componnents.SearchBar
-import kotlinx.coroutines.delay
 
 @Composable
 fun BreedsListScreen(
@@ -41,6 +34,7 @@ fun BreedsListScreen(
     onNavigateToFavourites: () -> Unit
 ) {
     val uiState by viewModel.breedsListState.collectAsState()
+    val search by viewModel.search.collectAsState()
     val breedList = viewModel.breedPagingFlow.collectAsLazyPagingItems()
 
     ListScreen(
@@ -55,7 +49,7 @@ fun BreedsListScreen(
                     modifier = Modifier
                         .padding(horizontal = 12.dp)
                         .fillMaxWidth(),
-                    query = uiState.search,
+                    query = search,
                     onQueryChange = {
                         viewModel.setSearch(it)
                     },
@@ -81,7 +75,7 @@ fun BreedsListScreen(
                     .fillMaxSize()
                     .padding(innerPadding),
             ) {
-                if(breedList.loadState.hasError && breedList.loadState.append.endOfPaginationReached){
+                if(breedList.loadState.hasError){
                     ErrorMessage(
                         modifier = Modifier
                             .align(Alignment.Center),
@@ -105,7 +99,6 @@ fun BreedsListScreen(
                                 BreedItem(
                                     breed = breed,
                                     onClick = {
-                                        viewModel.saveBreed(breed)
                                         onNavigateToDetails(breed.id)
                                     },
                                     onToggleFavourite = {

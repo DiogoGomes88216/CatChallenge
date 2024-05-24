@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.catchallenge.data.local.entities.BreedEntity
 
 @Dao
@@ -38,4 +39,7 @@ interface BreedDao {
         """
     )
     fun pagingSource(): PagingSource<Int, BreedEntity>
+
+    @Update
+    suspend fun updateBreedEntity(breed: BreedEntity)
 }

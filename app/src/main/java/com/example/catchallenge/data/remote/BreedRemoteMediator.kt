@@ -8,16 +8,15 @@ import androidx.room.withTransaction
 import com.example.catchallenge.data.local.db.BreedDatabase
 import com.example.catchallenge.data.local.entities.BreedEntity
 import com.example.catchallenge.data.local.entities.RemoteKeys
-import com.example.catchallenge.data.remote.api.BreedApi
-import com.example.catchallenge.data.mappers.BreedMapper.toBreedEntity
+import com.example.catchallenge.data.repository.BreedRepository
 import com.example.catchallenge.utils.Constants.PAGE_SIZE
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class BreedRemoteMediator @Inject constructor(
-    private val api: BreedApi,
+class BreedRemoteMediator(
+    private val repository: BreedRepository,
+    private val searchQuery: String,
     private val db: BreedDatabase
 ) : RemoteMediator<Int, BreedEntity>() {
 
@@ -46,13 +45,13 @@ class BreedRemoteMediator @Inject constructor(
         }
 
         try {
-            val results = api.getBreeds(limit = limit, page = page)
-
-            val domainData = results.map {dto ->
-                dto.toBreedEntity()
+            val (breedEntities, endOfPaginationReached) = if(searchQuery.isNotEmpty())
+            {
+                repository.searchBreed(searchQuery) to true
+            }else {
+                val domainData = repository.getBreeds(limit = limit, page = page)
+                domainData to domainData.isEmpty()
             }
-
-            val endOfPaginationReached = domainData.isEmpty()
 
             db.withTransaction {
                 // clear all tables in the database
@@ -62,11 +61,11 @@ class BreedRemoteMediator @Inject constructor(
                 }
                 val prevKey = if (page == initialPage) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = domainData.map {
+                val keys = breedEntities.map {
                     RemoteKeys(name = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 db.remoteKeysDao().insertAll(keys)
-                db.breedDao.insertBreedEntities(domainData)
+                db.breedDao.insertBreedEntities(breedEntities)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {

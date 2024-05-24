@@ -25,27 +25,17 @@ class FavouritesViewModel @Inject constructor(
     private fun observeFavourites() {
         viewModelScope.launch {
             repository.getFavouritesFlow()
-                .collect { result ->
-                    result.onSuccess { favourites ->
+                .collect { favourites ->
                         _favouritesState.update {
                             it.copy(favourites = favourites, isLoading = false, hasError = false)
                         }
-                    }.onFailure { ex ->
-                        _favouritesState.update {
-                            it.copy(isLoading = false, hasError = true, error = ex.toString())
-                        }
-                    }
                 }
         }
     }
 
     fun toggleFavourite(breed: Breed) {
         viewModelScope.launch {
-            if(breed.isFavourite) {
-                repository.removeFavourite(breed.id)
-            } else {
-                repository.addFavourite(breed)
-            }
+           repository.toggleFavourite(breed)
         }
     }
 }

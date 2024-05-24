@@ -12,4 +12,5 @@ data class BreedEntity(
     val temperament: String,
     val description: String,
     val imageUrl: String?,
+    val isFavourite: Boolean,
 )

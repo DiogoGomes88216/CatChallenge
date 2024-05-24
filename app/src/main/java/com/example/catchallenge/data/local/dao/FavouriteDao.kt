@@ -1,10 +1,10 @@
 package com.example.catchallenge.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import com.example.catchallenge.data.local.entities.FavouriteEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -14,19 +14,12 @@ interface FavouriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavouriteEntity(favourite: FavouriteEntity)
 
-    @Query(
-        """
-            DELETE 
-            FROM favouriteentity
-            WHERE id LIKE :id
-        """
-    )
-    suspend fun deleteFavouriteEntity(id: String)
+    @Delete
+    suspend fun deleteFavouriteEntity(entity: FavouriteEntity)
 
     @Query("DELETE FROM favouriteentity")
     suspend fun clearFavouriteEntity()
 
-    @Transaction
     @Query(
         """
             SELECT EXISTS(
@@ -37,7 +30,6 @@ interface FavouriteDao {
     )
     suspend fun hasFavourite(id: String): Boolean
 
-    @Transaction
     @Query(
         """
             SELECT *
@@ -47,4 +39,12 @@ interface FavouriteDao {
         """
     )
     fun getFavouritesFlow(): Flow<List<FavouriteEntity>>
+
+    @Query(
+        """
+            SELECT id
+            FROM favouriteentity
+        """
+    )
+    fun getFavouritesIdFlow(): Flow<List<String>>
 }

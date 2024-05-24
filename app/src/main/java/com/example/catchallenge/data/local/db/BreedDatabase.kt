@@ -15,7 +15,7 @@ import com.example.catchallenge.data.local.entities.RemoteKeys
         RemoteKeys::class,
         FavouriteEntity::class
     ],
-    version = 2
+    version = 3
 )
 abstract class BreedDatabase: RoomDatabase() {
     abstract val breedDao: BreedDao

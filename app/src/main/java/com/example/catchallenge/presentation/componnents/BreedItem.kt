@@ -2,7 +2,6 @@ package com.example.catchallenge.presentation.componnents
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
@@ -45,7 +44,9 @@ fun BreedItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column{
+            Column(
+                modifier = Modifier.weight(1f)
+            ){
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 6.dp),
@@ -69,7 +70,6 @@ fun BreedItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
             IconButton(
                 onClick = { onToggleFavourite() }
             ) {

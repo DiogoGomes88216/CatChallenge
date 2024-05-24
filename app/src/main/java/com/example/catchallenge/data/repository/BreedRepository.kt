@@ -8,67 +8,64 @@ import com.example.catchallenge.data.mappers.BreedMapper.toBreed
 import com.example.catchallenge.data.mappers.BreedMapper.toBreedEntity
 import com.example.catchallenge.data.mappers.FavouriteMapper.toBreed
 import com.example.catchallenge.data.mappers.FavouriteMapper.toFavouriteEntity
-import com.example.catchallenge.data.remote.SearchPagingSource
 import com.example.catchallenge.data.remote.api.BreedApi
 import com.example.catchallenge.domain.models.Breed
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class BreedRepository @Inject constructor(
+    private val api: BreedApi,
     private val breedDao: BreedDao,
     private val favouriteDao: FavouriteDao,
-    private val api: BreedApi
 ) {
 
-    fun getPagingSource(query: String): PagingSource<Int, BreedEntity> {
-        return if(query.isEmpty())
-            breedDao.pagingSource()
-        else
-            SearchPagingSource(this, query)
+    fun getPagingSource(): PagingSource<Int, BreedEntity> {
+        return breedDao.pagingSource()
     }
 
-    suspend fun insertBreed(breed: Breed) {
-        breedDao.insertBreedEntity(breed.toBreedEntity())
-    }
-
-    suspend fun searchBreed(query: String): Result<List<BreedEntity>> {
+    suspend fun searchBreed(query: String): List<BreedEntity> {
         return try {
             val results = api.searchBreeds(query = query)
             val breedEntities = results.map {
-                it.toBreedEntity()
+                it.toBreedEntity(isFavourite(it.id))
             }
-            Result.success(breedEntities)
+            breedEntities
         } catch (ex: Exception){
-            Result.failure(ex)
+            emptyList()
+        }
+    }
+
+    suspend fun getBreeds(limit: Int, page: Int): List<BreedEntity> {
+        val results = api.getBreeds(limit = limit, page = page)
+
+        return results.map {dto ->
+            dto.toBreedEntity(isFavourite(dto.id))
         }
     }
 
     suspend fun getBreedDetailsById(id: String): Breed {
         val dbResult = breedDao.getBreedEntityById(id)
-        return dbResult.toBreed(isFavourite(id))
+        return dbResult.toBreed()
     }
 
     suspend fun isFavourite(id: String): Boolean {
-        return (favouriteDao.hasFavourite(id))
+        return favouriteDao.hasFavourite(id)
     }
 
-    suspend fun removeFavourite(id: String) {
-        return favouriteDao.deleteFavouriteEntity(id)
+    suspend fun toggleFavourite(breed: Breed) {
+        if (breed.isFavourite) {
+            favouriteDao.deleteFavouriteEntity(breed.toFavouriteEntity())
+            breedDao.updateBreedEntity(breed.copy(isFavourite = false).toBreedEntity())
+        } else {
+            favouriteDao.insertFavouriteEntity(breed.toFavouriteEntity())
+            breedDao.updateBreedEntity(breed.copy(isFavourite = true).toBreedEntity())
+        }
     }
 
-    suspend fun addFavourite(breed: Breed) {
-        return favouriteDao.insertFavouriteEntity(breed.toFavouriteEntity())
-    }
-
-    suspend fun getFavouritesFlow(): Flow<Result<List<Breed>>> {
-
-        return favouriteDao.getFavouritesFlow()
-            .map { list ->
-                Result.success(list.map { it.toBreed() }) }
-            .catch { emit(Result.failure(it)) }
+    fun getFavouritesFlow(): Flow<List<Breed>> {
+        return favouriteDao.getFavouritesFlow().map { list ->
+                list.map { it.toBreed() }
+            }
     }
 }

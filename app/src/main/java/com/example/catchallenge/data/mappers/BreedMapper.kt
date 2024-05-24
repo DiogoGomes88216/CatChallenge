@@ -17,7 +17,7 @@ object BreedMapper {
         isFavourite = isFavourite,
     )
 
-    fun BreedDto.toBreedEntity() = BreedEntity(
+    fun BreedDto.toBreedEntity(isFavourite: Boolean) = BreedEntity(
         id = id,
         name = name,
         origin = origin,
@@ -25,9 +25,10 @@ object BreedMapper {
         temperament = temperament,
         description = description,
         imageUrl = image?.url,
+        isFavourite = isFavourite
     )
 
-    fun BreedEntity.toBreed(isFavourite: Boolean) = Breed(
+    fun BreedEntity.toBreed() = Breed(
         id = id,
         name = name,
         origin = origin,
@@ -46,6 +47,7 @@ object BreedMapper {
         temperament = temperament,
         description = description,
         imageUrl = imageUrl,
+        isFavourite = isFavourite,
     )
 
 }

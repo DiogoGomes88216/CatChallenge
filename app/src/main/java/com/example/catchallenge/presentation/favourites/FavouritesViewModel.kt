@@ -18,21 +18,22 @@ class FavouritesViewModel @Inject constructor(
 
     private val _favouritesState = MutableStateFlow(FavouritesState())
     val favouritesState: StateFlow<FavouritesState> by lazy {
-        getFavourites()
+        observeFavourites()
         _favouritesState
     }
 
-    private fun getFavourites() {
+    private fun observeFavourites() {
         viewModelScope.launch {
-            repository.getFavourites()
-                .onSuccess { favourites ->
-                    _favouritesState.update {
-                        it.copy(favourites = favourites, isLoading = false, hasError = false)
-                    }
-                }
-                .onFailure {ex ->
-                    _favouritesState.update {
-                        it.copy(isLoading = false, hasError = true, error = ex.toString())
+            repository.getFavouritesFlow()
+                .collect { result ->
+                    result.onSuccess { favourites ->
+                        _favouritesState.update {
+                            it.copy(favourites = favourites, isLoading = false, hasError = false)
+                        }
+                    }.onFailure { ex ->
+                        _favouritesState.update {
+                            it.copy(isLoading = false, hasError = true, error = ex.toString())
+                        }
                     }
                 }
         }
@@ -45,7 +46,6 @@ class FavouritesViewModel @Inject constructor(
             } else {
                 repository.addFavourite(breed)
             }
-            getFavourites()
         }
     }
 }

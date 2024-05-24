@@ -11,6 +11,9 @@ import com.example.catchallenge.data.mappers.FavouriteMapper.toFavouriteEntity
 import com.example.catchallenge.data.remote.SearchPagingSource
 import com.example.catchallenge.data.remote.api.BreedApi
 import com.example.catchallenge.domain.models.Breed
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class BreedRepository @Inject constructor(
@@ -59,15 +62,11 @@ class BreedRepository @Inject constructor(
         return favouriteDao.insertFavouriteEntity(breed.toFavouriteEntity())
     }
 
-    suspend fun getFavourites(): Result<List<Breed>> {
+    suspend fun getFavouritesFlow(): Flow<Result<List<Breed>>> {
 
-        val dbResult = favouriteDao.getFavourites()
-        dbResult?.let {
-            return Result.success(
-                it.map { favourite ->
-                    favourite.toBreed()
-                } )
-        }
-        return Result.failure(Exception("Not Found"))
+        return favouriteDao.getFavouritesFlow()
+            .map { list ->
+                Result.success(list.map { it.toBreed() }) }
+            .catch { emit(Result.failure(it)) }
     }
 }

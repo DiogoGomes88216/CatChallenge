@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.catchallenge.data.local.entities.FavouriteEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavouriteDao {
@@ -45,5 +46,5 @@ interface FavouriteDao {
             ASC
         """
     )
-    suspend fun getFavourites(): List<FavouriteEntity>?
+    fun getFavouritesFlow(): Flow<List<FavouriteEntity>>
 }

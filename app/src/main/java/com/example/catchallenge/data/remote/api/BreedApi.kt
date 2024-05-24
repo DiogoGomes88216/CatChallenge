@@ -12,4 +12,6 @@ interface BreedApi {
         @Query("page") page: Int,
     ): List<BreedDto>
 
+    @GET("breeds/search")
+    suspend fun searchBreeds(@Query("q") query: String): List<BreedDto>
 }

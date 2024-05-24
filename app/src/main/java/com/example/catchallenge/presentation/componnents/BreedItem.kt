@@ -45,7 +45,7 @@ fun BreedItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(){
+            Column{
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 6.dp),

@@ -45,7 +45,6 @@ class FavouritesViewModel @Inject constructor(
             } else {
                 repository.addFavourite(breed)
             }
-
             getFavourites()
         }
     }

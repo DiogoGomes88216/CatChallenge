@@ -26,7 +26,7 @@ fun ListScreen(
     title: String,
     bottomItemIndex: Int = 0,
     onChange: () -> Unit,
-    actions: @Composable() (RowScope.() -> Unit) = {},
+    actions: @Composable (RowScope.() -> Unit) = {},
     content: LazyStaggeredGridScope.() -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -57,7 +57,9 @@ fun ListScreen(
         }
     ) { innerPadding ->
         LazyVerticalStaggeredGrid(
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             columns = StaggeredGridCells.Fixed(2),
             verticalItemSpacing = 16.dp,
             horizontalArrangement = Arrangement.spacedBy(8.dp),

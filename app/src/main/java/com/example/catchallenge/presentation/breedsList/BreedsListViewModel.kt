@@ -44,7 +44,8 @@ class BreedsListViewModel @Inject constructor(
             ),
             remoteMediator = remoteMediator
         ) {
-            repository.getPagingSource()
+            repository.getPagingSource(query = _breedsListState.value.search)
+
         }.flow.map { pagingData ->
             pagingData.map {
                 it.toBreed(isFavourite = repository.isFavourite(it.id))
@@ -62,6 +63,30 @@ class BreedsListViewModel @Inject constructor(
             _breedsListState.update {
                 it.copy(favouriteToggle = !_breedsListState.value.favouriteToggle)
             }
+        }
+    }
+
+    fun saveBreed(breed: Breed) {
+        viewModelScope.launch {
+            repository.insertBreed(breed)
+        }
+    }
+
+    fun clearSearch() {
+        _breedsListState.update {
+            it.copy(search = "")
+        }
+    }
+
+    fun setSearch(query: String) {
+        _breedsListState.update {
+            it.copy(search = query)
+        }
+    }
+
+    fun toggleIsSearchShowing() {
+        _breedsListState.update {
+            it.copy(isSearchShowing = !_breedsListState.value.isSearchShowing)
         }
     }
 }

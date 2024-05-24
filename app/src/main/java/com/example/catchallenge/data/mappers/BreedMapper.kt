@@ -37,4 +37,15 @@ object BreedMapper {
         imageUrl = imageUrl,
         isFavourite = isFavourite,
     )
+
+    fun Breed.toBreedEntity() = BreedEntity(
+        id = id,
+        name = name,
+        origin = origin,
+        lifeSpan = lifeSpan,
+        temperament = temperament,
+        description = description,
+        imageUrl = imageUrl,
+    )
+
 }

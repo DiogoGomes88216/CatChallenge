@@ -5,22 +5,46 @@ import com.example.catchallenge.data.local.dao.BreedDao
 import com.example.catchallenge.data.local.dao.FavouriteDao
 import com.example.catchallenge.data.local.entities.BreedEntity
 import com.example.catchallenge.data.mappers.BreedMapper.toBreed
+import com.example.catchallenge.data.mappers.BreedMapper.toBreedEntity
 import com.example.catchallenge.data.mappers.FavouriteMapper.toBreed
 import com.example.catchallenge.data.mappers.FavouriteMapper.toFavouriteEntity
+import com.example.catchallenge.data.remote.SearchPagingSource
+import com.example.catchallenge.data.remote.api.BreedApi
 import com.example.catchallenge.domain.models.Breed
 import javax.inject.Inject
 
 class BreedRepository @Inject constructor(
     private val breedDao: BreedDao,
     private val favouriteDao: FavouriteDao,
+    private val api: BreedApi
 ) {
 
-    fun getPagingSource(): PagingSource<Int, BreedEntity> {
-        return breedDao.pagingSource()
+    fun getPagingSource(query: String): PagingSource<Int, BreedEntity> {
+        return if(query.isEmpty())
+            breedDao.pagingSource()
+        else
+            SearchPagingSource(this, query)
+    }
+
+    suspend fun insertBreed(breed: Breed) {
+        breedDao.insertBreedEntity(breed.toBreedEntity())
+    }
+
+    suspend fun searchBreed(query: String): Result<List<BreedEntity>> {
+        return try {
+            val results = api.searchBreeds(query = query)
+            val breedEntities = results.map {
+                it.toBreedEntity()
+            }
+            Result.success(breedEntities)
+        } catch (ex: Exception){
+            Result.failure(ex)
+        }
     }
 
     suspend fun getBreedDetailsById(id: String): Breed {
-        return breedDao.getBreedEntityById(id).toBreed(isFavourite(id))
+        val dbResult = breedDao.getBreedEntityById(id)
+        return dbResult.toBreed(isFavourite(id))
     }
 
     suspend fun isFavourite(id: String): Boolean {

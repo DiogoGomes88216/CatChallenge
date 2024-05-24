@@ -11,4 +11,6 @@
     <string name="years">Years</string>
     <string name="searchBreeds">Search Breeds</string>
     <string name="cancel">Cancel</string>
+    <string name="genericError">An Error Has Occurred</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -16,7 +16,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -87,6 +89,12 @@ class BreedsListViewModel @Inject constructor(
     fun toggleIsSearchShowing() {
         _breedsListState.update {
             it.copy(isSearchShowing = !_breedsListState.value.isSearchShowing)
+        }
+    }
+
+    fun retry(){
+        _breedsListState.update {
+            it.copy(retry = !_breedsListState.value.retry)
         }
     }
 }

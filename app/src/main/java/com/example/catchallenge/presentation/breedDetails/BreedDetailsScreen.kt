@@ -41,7 +41,6 @@ fun BreedDetailsScreen(
     onNavigateBack: () -> Unit
 ) {
     val uiState by viewModel.breedDetailsState.collectAsState()
-    Text(text = uiState.breed.name)
 
     Scaffold(
         modifier = Modifier

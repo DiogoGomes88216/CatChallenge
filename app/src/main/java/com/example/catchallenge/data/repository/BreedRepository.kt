@@ -13,6 +13,8 @@ import com.example.catchallenge.data.remote.api.BreedApi
 import com.example.catchallenge.domain.models.Breed
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

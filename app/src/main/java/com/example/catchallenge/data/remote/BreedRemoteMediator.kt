@@ -45,10 +45,9 @@ class BreedRemoteMediator(
         }
 
         try {
-            val (breedEntities, endOfPaginationReached) = if(searchQuery.isNotEmpty())
-            {
+            val (breedEntities, endOfPaginationReached) = if(searchQuery.isNotEmpty()) {
                 repository.searchBreed(searchQuery) to true
-            }else {
+            } else {
                 val domainData = repository.getBreeds(limit = limit, page = page)
                 domainData to domainData.isEmpty()
             }
@@ -62,7 +61,7 @@ class BreedRemoteMediator(
                 val prevKey = if (page == initialPage) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val keys = breedEntities.map {
-                    RemoteKeys(name = it.id, prevKey = prevKey, nextKey = nextKey)
+                    RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 db.remoteKeysDao().insertAll(keys)
                 db.breedDao.insertBreedEntities(breedEntities)

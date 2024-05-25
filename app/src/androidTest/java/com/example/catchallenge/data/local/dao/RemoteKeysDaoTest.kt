@@ -40,12 +40,12 @@ class RemoteKeysDaoTest {
     @Test
     fun insertAll() = runTest {
         val remoteKey1 = RemoteKeys (
-            name = "test1",
+            id = "test1",
             prevKey = 0,
             nextKey = 2,
         )
         val remoteKey2 = RemoteKeys (
-            name = "test2",
+            id = "test2",
             prevKey = 0,
             nextKey = 2,
         )
@@ -61,7 +61,7 @@ class RemoteKeysDaoTest {
     @Test
     fun clearRemoteKeys() = runTest{
         val remoteKey = RemoteKeys (
-            name = "test1",
+            id = "test1",
             prevKey = 0,
             nextKey = 2,
         )

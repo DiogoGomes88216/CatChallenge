@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
@@ -31,9 +30,9 @@ class BreedsListViewModel @Inject constructor(
     mediatorFactory: BreedRemoteMediatorFactory,
 ): ViewModel() {
 
-    private val _breedsListState = MutableStateFlow(BreedsListState())
-    val breedsListState: StateFlow<BreedsListState> by lazy {
-        _breedsListState
+    private val _isSearchShowing = MutableStateFlow(false)
+    val isSearchShowing: StateFlow<Boolean> by lazy {
+        _isSearchShowing
     }
 
     private val _search = MutableStateFlow("")
@@ -55,7 +54,7 @@ class BreedsListViewModel @Inject constructor(
             pagingData.map {
                 it.toBreed()
             }
-        }.cachedIn(viewModelScope)
+        }
     }.cachedIn(viewModelScope)
 
     fun toggleFavourite(breed: Breed) {
@@ -73,14 +72,6 @@ class BreedsListViewModel @Inject constructor(
     }
 
     fun toggleIsSearchShowing() {
-        _breedsListState.update {
-            it.copy(isSearchShowing = !_breedsListState.value.isSearchShowing)
-        }
-    }
-
-    fun retry(){
-        _breedsListState.update {
-            it.copy(retry = !_breedsListState.value.retry)
-        }
+        _isSearchShowing.value = !isSearchShowing.value
     }
 }

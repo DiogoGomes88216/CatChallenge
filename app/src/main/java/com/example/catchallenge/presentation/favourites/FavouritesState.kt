@@ -6,5 +6,4 @@ data class FavouritesState(
     val favourites: List<Breed> = emptyList(),
     val isLoading: Boolean = true,
     val hasError: Boolean = false,
-    val error: String = "",
 )

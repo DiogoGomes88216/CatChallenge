@@ -7,6 +7,7 @@ import com.example.catchallenge.domain.models.Breed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,11 +26,17 @@ class FavouritesViewModel @Inject constructor(
     private fun observeFavourites() {
         viewModelScope.launch {
             repository.getFavouritesFlow()
-                .collect { favourites ->
-                        _favouritesState.update {
-                            it.copy(favourites = favourites, isLoading = false, hasError = false)
-                        }
+                .catch {
+                    _favouritesState.update {
+                        it.copy(isLoading = false, hasError = true)
+                    }
                 }
+                .collect { favourites ->
+                    _favouritesState.update {
+                        it.copy(favourites = favourites, isLoading = false, hasError = false)
+                    }
+                }
+
         }
     }
 

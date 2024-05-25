@@ -17,9 +17,6 @@ interface FavouriteDao {
     @Delete
     suspend fun deleteFavouriteEntity(entity: FavouriteEntity)
 
-    @Query("DELETE FROM favouriteentity")
-    suspend fun clearFavouriteEntity()
-
     @Query(
         """
             SELECT EXISTS(
@@ -40,11 +37,4 @@ interface FavouriteDao {
     )
     fun getFavouritesFlow(): Flow<List<FavouriteEntity>>
 
-    @Query(
-        """
-            SELECT id
-            FROM favouriteentity
-        """
-    )
-    fun getFavouritesIdFlow(): Flow<List<String>>
 }

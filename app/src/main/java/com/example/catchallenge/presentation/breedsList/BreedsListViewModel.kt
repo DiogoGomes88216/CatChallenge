@@ -56,7 +56,7 @@ class BreedsListViewModel @Inject constructor(
                 it.toBreed()
             }
         }.cachedIn(viewModelScope)
-    }
+    }.cachedIn(viewModelScope)
 
     fun toggleFavourite(breed: Breed) {
         viewModelScope.launch {

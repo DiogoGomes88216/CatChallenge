@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.catchallenge.data.local.entities.BreedEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BreedDao {
@@ -29,7 +30,7 @@ interface BreedDao {
             WHERE id LIKE :id
         """
     )
-    suspend fun getBreedEntityById(id: String): BreedEntity
+    fun getBreedEntityById(id: String): Flow<BreedEntity>
 
 
     @Query(

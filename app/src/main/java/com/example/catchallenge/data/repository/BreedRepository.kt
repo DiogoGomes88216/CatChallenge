@@ -44,9 +44,9 @@ class BreedRepository @Inject constructor(
         }
     }
 
-    suspend fun getBreedDetailsById(id: String): Breed {
+    fun getBreedDetailsById(id: String): Flow<Breed> {
         val dbResult = breedDao.getBreedEntityById(id)
-        return dbResult.toBreed()
+        return dbResult.map {it.toBreed()}
     }
 
     suspend fun isFavourite(id: String): Boolean {

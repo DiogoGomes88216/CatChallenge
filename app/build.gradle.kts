@@ -108,8 +108,28 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     //Testing
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Unit tests
+//    testImplementation(libs.junit)
+//    testImplementation("io.mockk:mockk:1.12.2")
+//    testImplementation("com.google.truth:truth:$truthVersion")
+//    testImplementation("androidx.test:core-ktx:$androidxTestCoreVersion")
+//    testImplementation("androidx.test:runner:$androidxTestRunnerVersion")
+//    testImplementation("androidx.test.ext:junit:$androidxTestExtJUnitVersion")
+//    testImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+//    testImplementation("androidx.arch.core:core-testing:$coreTestingVersion")
+//    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+//
+//    // Android tests
+//    androidTestImplementation(libs.junit)
+//    androidTestImplementation("io.mockk:mockk-android:1.12.2")
+//    androidTestImplementation("com.google.truth:truth:$truthVersion")
+//    androidTestImplementation("androidx.test:core-ktx:$androidxTestCoreVersion")
+//    androidTestImplementation("androidx.test:runner:$androidxTestRunnerVersion")
+//    androidTestImplementation("androidx.test.ext:junit:$androidxTestExtJUnitVersion")
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+
 }

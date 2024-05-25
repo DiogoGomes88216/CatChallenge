@@ -28,10 +28,12 @@ class BreedDetailsViewModel @Inject constructor(
 
     private fun getBreedDetailsById(id: String) {
         viewModelScope.launch {
-            val breed = repository.getBreedDetailsById(id = id)
-            _breedDetailsState.update {
-                it.copy(breed = breed)
-            }
+            repository.getBreedDetailsById(id)
+                .collect {breed ->
+                    _breedDetailsState.update {
+                        it.copy(breed = breed)
+                    }
+                }
         }
     }
 

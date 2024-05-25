@@ -65,6 +65,7 @@ fun FavouritesScreen(
                             uiState.favourites[pos].let {breed ->
                                 BreedItem(
                                     breed = breed,
+                                    showLifeSpan = true,
                                     onClick = {
                                         onNavigateToDetails(breed.id)
                                     },
